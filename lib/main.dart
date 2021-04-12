@@ -18,7 +18,7 @@ class _ChartApp extends StatelessWidget {
 
 class _MyHomePage extends StatefulWidget {
   // ignore: prefer_const_constructors_in_immutables
-  _MyHomePage({Key key}) : super(key: key);
+  _MyHomePage({Key? key}) : super(key: key);
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -84,17 +84,17 @@ class CustomColumnSeriesRenderer extends ColumnSeriesRenderer {
 // Initialized Custom Segment painter for customizing each segements of the series based on the current segment index value.
 class CustomChartPainter extends ColumnSegment {
   // Initialized a rect to store the segment rect of each column
-  Rect rect;
+  late Rect rect;
   @override
   void onPaint(Canvas canvas) {
     rect = segmentRect.outerRect;
     // Based on teh y value of the column, we have set the border radius for the each column segment
     // here, if the value is above 35, the bottom corner parts of the colum segement will be rounded.
-    if (chartData[currentSegmentIndex].sales > 35) {
+    if (chartData[currentSegmentIndex!].sales > 35) {
       segmentRect = RRect.fromRectAndCorners(rect,
           bottomLeft: Radius.circular(25), bottomRight: Radius.circular(25));
       // here, if the value is below 35, the top corner parts of the colum segement will be rounded.
-    } else if (chartData[currentSegmentIndex].sales < 35) {
+    } else if (chartData[currentSegmentIndex!].sales < 35) {
       segmentRect = RRect.fromRectAndCorners(rect,
           topLeft: Radius.circular(25), topRight: Radius.circular(25));
     } // You can set the radius values as per your wish using the necessary parameters(topLeft, topRight, bottomRight, bottomLeft) of the RRect.fromRectAndCorners method.
