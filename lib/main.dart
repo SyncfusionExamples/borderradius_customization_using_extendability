@@ -53,7 +53,7 @@ class _MyHomePageState extends State<_MyHomePage> {
                   title: ChartTitle(text: 'Half yearly sales analysis'),
                   // Enable legend
                   legend: Legend(isVisible: true),
-                  series: <ChartSeries<_SalesData, String>>[
+                  series: <ColumnSeries<_SalesData, String>>[
                     ColumnSeries<_SalesData, String>(
                         // Event with which the overridng is done in the chart.
                         onCreateRenderer:
@@ -71,30 +71,30 @@ class _MyHomePageState extends State<_MyHomePage> {
 }
 
 // Custom colum series renderer for creating the custom segemnt painter
-class CustomColumnSeriesRenderer extends ColumnSeriesRenderer {
+class CustomColumnSeriesRenderer<T, D> extends ColumnSeriesRenderer<T, D> {
   CustomColumnSeriesRenderer();
 
   @override
-  ChartSegment createSegment() {
+  ColumnSegment<T, D> createSegment() {
     // Custom segement painter returned
     return CustomChartPainter();
   }
 }
 
 // Initialized Custom Segment painter for customizing each segements of the series based on the current segment index value.
-class CustomChartPainter extends ColumnSegment {
+class CustomChartPainter<T, D> extends ColumnSegment<T, D> {
   // Initialized a rect to store the segment rect of each column
   late Rect rect;
   @override
   void onPaint(Canvas canvas) {
-    rect = segmentRect.outerRect;
+    rect = segmentRect!.outerRect;
     // Based on teh y value of the column, we have set the border radius for the each column segment
     // here, if the value is above 35, the bottom corner parts of the colum segement will be rounded.
-    if (chartData[currentSegmentIndex!].sales > 35) {
+    if (chartData[currentSegmentIndex].sales > 35) {
       segmentRect = RRect.fromRectAndCorners(rect,
           bottomLeft: Radius.circular(25), bottomRight: Radius.circular(25));
       // here, if the value is below 35, the top corner parts of the colum segement will be rounded.
-    } else if (chartData[currentSegmentIndex!].sales < 35) {
+    } else if (chartData[currentSegmentIndex].sales < 35) {
       segmentRect = RRect.fromRectAndCorners(rect,
           topLeft: Radius.circular(25), topRight: Radius.circular(25));
     } // You can set the radius values as per your wish using the necessary parameters(topLeft, topRight, bottomRight, bottomLeft) of the RRect.fromRectAndCorners method.
